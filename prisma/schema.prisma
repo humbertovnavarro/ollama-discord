@@ -11,4 +11,24 @@ model User {
   id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  memories Memory[]
+  contexts Context[]
+}
+
+model Memory {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  memory    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Context {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  context   String
+  user      User     @relation(fields: [userId], references: [id])
 }

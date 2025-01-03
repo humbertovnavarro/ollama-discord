@@ -1,4 +1,4 @@
-import { Client, Collection, Message } from 'discord.js';
+import { Client, Message } from 'discord.js';
 const client = new Client({ intents: ["Guilds", "MessageContent"] });
 import { readdirSync } from 'fs';
 
@@ -7,8 +7,9 @@ type Command = {
     description: string;
     execute: (message: Message, args: string[]) => Promise<void>;
 }
+
 // Create a collection to store commands
-const commands = new Collection<string, Command>();
+const commands = new Map<string, Command>();
 
 const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.ts'));
 
@@ -22,6 +23,9 @@ for(const file of commandFiles) {
 client.once('ready', () => {
     console.log(`Logged in as ${client.user?.tag}!`);
 });
+
+client.commands = commands;
+
 
 // Event listener for message events
 client.on('messageCreate', async (message) => {
